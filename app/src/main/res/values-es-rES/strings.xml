@@ -3,4 +3,6 @@
     <string name="app_name">AndroidApplications</string>
     <string name="hey_msg">Hola World!</string>
     <string name="btn_msg">Hola, si Boten</string>
+    <string name="login_txt">Login</string>
+    <string name="password_txt">Password</string>
 </resources>
