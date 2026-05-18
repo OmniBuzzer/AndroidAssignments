@@ -4,4 +4,5 @@
     <string name="btn_msg">I\'m a Button</string>
     <string name="login_txt">Login</string>
     <string name="password_txt">Password</string>
+    <string name="switch_btn_text">What does this do?</string>
 </resources>
