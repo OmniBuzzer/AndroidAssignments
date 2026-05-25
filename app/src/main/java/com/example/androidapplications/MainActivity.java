@@ -1,9 +1,10 @@
 package com.example.androidapplications;
 
-import static android.content.ContentValues.TAG;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+
+    private static final int REQ_CODE = 10;
+
+    private Button buttonPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +31,26 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        buttonPress.findViewById(R.id.buttonPress);
+
+//        buttonPress.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, ListItemsActivity.class);
+//                startActivity(intent, REQ_CODE);
+//            }
+//        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode, Intent data) {
+        super.onActivityResult(requestCode, responseCode, data);
+
+        // Check if this result is from ListItemsActivity
+        if (requestCode == REQ_CODE) {
+            Log.i(TAG, "Returned to MainActivity.onActivityResult");
+        }
     }
 
     @Override
