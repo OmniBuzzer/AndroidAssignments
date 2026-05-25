@@ -13,10 +13,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ListItemsActivity extends AppCompatActivity {
 
+    private static final String TAG = "ListItemsActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: Activity is being created");
+        Log.d(TAG, "onCreate: ListItemsActivity is being created");
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_items);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -30,7 +32,7 @@ public class ListItemsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d(TAG, "onResume: Activity is in the foreground");
+        Log.d(TAG, "onResume: ListItemsActivity is in the foreground");
 
         // Activity is interactive. Start things that should only run
         // while the user is actively using the screen:
@@ -44,7 +46,7 @@ public class ListItemsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause: Activity is losing focus");
+        Log.d(TAG, "onPause: ListItemsActivity is losing focus");
 
         // Called when another activity comes in front (could be partial,
         // like a dialog). Keep this method FAST — heavy work delays the
@@ -57,7 +59,7 @@ public class ListItemsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop: Activity is no longer visible");
+        Log.d(TAG, "onStop: ListItemsActivity is no longer visible");
 
         // Activity is fully hidden. Safe to do heavier cleanup:
         // - Unregister broadcast receivers
@@ -69,7 +71,7 @@ public class ListItemsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy: Activity is being destroyed");
+        Log.d(TAG, "onDestroy: ListItemsActivity is being destroyed");
 
         // Final cleanup before the activity is gone.
         // - Cancel running threads or AsyncTasks

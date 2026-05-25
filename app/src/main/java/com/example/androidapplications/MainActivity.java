@@ -15,15 +15,13 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
+    
     private static final int REQ_CODE = 10;
-
-    private Button buttonPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: Activity is being created");
+        Log.d(TAG, "onCreate: MainActivity is being created");
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -32,15 +30,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        buttonPress.findViewById(R.id.buttonPress);
+        Button buttonPress = findViewById(R.id.buttonPress);
 
-//        buttonPress.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, ListItemsActivity.class);
-//                startActivity(intent, REQ_CODE);
-//            }
-//        });
+        buttonPress.setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ListItemsActivity.class);
+                startActivityForResult(intent, REQ_CODE);
+            }
+        });
     }
 
     @Override
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d(TAG, "onResume: Activity is in the foreground");
+        Log.d(TAG, "onResume: MainActivity is in the foreground");
 
         // Activity is interactive. Start things that should only run
         // while the user is actively using the screen:
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause: Activity is losing focus");
+        Log.d(TAG, "onPause: MainActivity is losing focus");
 
         // Called when another activity comes in front (could be partial,
         // like a dialog). Keep this method FAST — heavy work delays the
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop: Activity is no longer visible");
+        Log.d(TAG, "onStop: MainActivity is no longer visible");
 
         // Activity is fully hidden. Safe to do heavier cleanup:
         // - Unregister broadcast receivers
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy: Activity is being destroyed");
+        Log.d(TAG, "onDestroy: MainActivity is being destroyed");
 
         // Final cleanup before the activity is gone.
         // - Cancel running threads or AsyncTasks
