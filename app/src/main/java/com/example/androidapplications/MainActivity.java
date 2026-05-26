@@ -1,10 +1,12 @@
 package com.example.androidapplications;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,61 +48,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
 
-        // Check if this result is from ListItemsActivity
         if (requestCode == REQ_CODE) {
             Log.i(TAG, "Returned to MainActivity.onActivityResult");
+            if (responseCode == Activity.RESULT_OK && data != null) {
+
+                String messagePassed = data.getStringExtra("Response");
+
+                CharSequence text = "ListItemsActivity passed: " + messagePassed;
+                Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
+                toast.show();
+            }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         Log.d(TAG, "onResume: MainActivity is in the foreground");
-
-        // Activity is interactive. Start things that should only run
-        // while the user is actively using the screen:
-        // - Camera preview
-        // - Sensor listeners (accelerometer, GPS)
-        // - Animations
-        // - Resume video/audio playback
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: MainActivity is losing focus");
-
-        // Called when another activity comes in front (could be partial,
-        // like a dialog). Keep this method FAST — heavy work delays the
-        // next activity from appearing.
-        // - Pause animations or video playback
-        // - Unregister sensor listeners
-        // - Persist small bits of user data quickly
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: MainActivity is no longer visible");
-
-        // Activity is fully hidden. Safe to do heavier cleanup:
-        // - Unregister broadcast receivers
-        // - Stop background services tied to the UI
-        // - Commit larger data to disk or database
-        // - Release resources you don't need while hidden
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: MainActivity is being destroyed");
-
-        // Final cleanup before the activity is gone.
-        // - Cancel running threads or AsyncTasks
-        // - Close database connections
-        // - Release any remaining references to prevent memory leaks
-        // Note: not always called if the system kills the process.
     }
 }

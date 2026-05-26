@@ -5,4 +5,8 @@
     <string name="login_txt">Login</string>
     <string name="password_txt">Password</string>
     <string name="switch_btn_text">What does this do?</string>
+    <string name="dialog_title">Finish Activity?</string>
+    <string name="dialog_message">Do you want to finish this activity and return to the previous screen?</string>
+    <string name="ok">Yes</string>
+    <string name="cancel">No</string>
 </resources>

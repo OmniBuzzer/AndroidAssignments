@@ -106,15 +106,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         Log.d(TAG, "onResume: LoginActivity is in the foreground");
-
-        // Activity is interactive. Start things that should only run
-        // while the user is actively using the screen:
-        // - Camera preview
-        // - Sensor listeners (accelerometer, GPS)
-        // - Animations
-        // - Resume video/audio playback
 
     }
 
@@ -122,36 +114,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: LoginActivity is losing focus");
-
-        // Called when another activity comes in front (could be partial,
-        // like a dialog). Keep this method FAST — heavy work delays the
-        // next activity from appearing.
-        // - Pause animations or video playback
-        // - Unregister sensor listeners
-        // - Persist small bits of user data quickly
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: LoginActivity is no longer visible");
-
-        // Activity is fully hidden. Safe to do heavier cleanup:
-        // - Unregister broadcast receivers
-        // - Stop background services tied to the UI
-        // - Commit larger data to disk or database
-        // - Release resources you don't need while hidden
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: LoginActivity is being destroyed");
-
-        // Final cleanup before the activity is gone.
-        // - Cancel running threads or AsyncTasks
-        // - Close database connections
-        // - Release any remaining references to prevent memory leaks
-        // Note: not always called if the system kills the process.
     }
 }

@@ -6,4 +6,8 @@
     <string name="login_txt">Acceso</string>
     <string name="password_txt">Contrasena</string>
     <string name="switch_btn_text">Que hace esto?</string>
+    <string name="dialog_title">Finalizar actividad??</string>
+    <string name="dialog_message">Desea finalizar esta actividad y volver a la pantalla anterior?</string>
+    <string name="ok">Si</string>
+    <string name="cancel">No</string>
 </resources>
