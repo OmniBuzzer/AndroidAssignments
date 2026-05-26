@@ -1,14 +1,17 @@
 package com.example.androidapplications;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +38,8 @@ public class ListItemsActivity extends AppCompatActivity {
         });
 
         imgButton = findViewById(R.id.imageButton);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        Switch switchButton = findViewById(R.id.switchButton);
 
         imgButton.setOnClickListener(new View.OnClickListener() {
             @SuppressWarnings("deprecation")
@@ -50,11 +55,36 @@ public class ListItemsActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, 20);
             }
         });
+
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CharSequence text;
+                int duration;
+
+                if (isChecked) {
+                    text = "Switch is On";
+                    duration = Toast.LENGTH_SHORT;
+                } else {
+                    text = "Switch is Off";
+                    duration = Toast.LENGTH_LONG;
+                }
+
+                Toast toast = Toast.makeText(ListItemsActivity.this, text, duration);
+                toast.show();
+            }
+        });
+    }
+
+    public void print(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        print("Returned To ListItemsActivity");
 
         // Make sure this result came from our camera request
         if (requestCode == 20 && resultCode == RESULT_OK) {
