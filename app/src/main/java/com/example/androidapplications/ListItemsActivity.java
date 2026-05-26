@@ -1,9 +1,14 @@
 package com.example.androidapplications;
 
-import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +19,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class ListItemsActivity extends AppCompatActivity {
 
     private static final String TAG = "ListItemsActivity";
+
+    private ImageButton imgButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,42 @@ public class ListItemsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        imgButton = findViewById(R.id.imageButton);
+
+        imgButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onClick(View v) {
+                // MediaStore.ACTION_IMAGE_CAPTURE is a standard Intent action
+                // that any installed camera app can respond to.
+                // We don't name a specific Activity class — Android picks
+                // the user's default camera app.
+                Intent cameraIntent =
+                        new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                startActivityForResult(cameraIntent, 20);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Make sure this result came from our camera request
+        if (requestCode == 20 && resultCode == RESULT_OK) {
+
+            Log.i(TAG, "Photo captured, updating ImageButton");
+
+            // Extract the thumbnail Bitmap from the returned Intent's extras
+            Bundle extras = data.getExtras();
+            assert extras != null;
+            Bitmap photo = (Bitmap) extras.get("data");
+
+            // Replace the button's image with the photo we just took
+            imgButton.setImageBitmap(photo);
+        }
     }
 
     @Override
