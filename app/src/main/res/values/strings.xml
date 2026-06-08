@@ -9,4 +9,7 @@
     <string name="dialog_message">Do you want to finish this activity and return to the previous screen?</string>
     <string name="ok">Yes</string>
     <string name="cancel">No</string>
+    <string name="start_chat_btn">Start Chat</string>
+    <string name="send_button_text">Send</string>
+    <string name="send_msg_text">Enter text…</string>
 </resources>
