@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -90,8 +91,12 @@ public class ChatWindow extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            // You'll implement this properly in step 9.
-            return super.getView(position, convertView, parent);
+            // Temporary stub until step 9 — just show the message text in a basic TextView.
+            TextView tv = new TextView(ChatWindow.this);
+            tv.setText(getItem(position));
+            tv.setTextSize(18);
+            tv.setPadding(24, 24, 24, 24);
+            return tv;
         }
     }
 }
