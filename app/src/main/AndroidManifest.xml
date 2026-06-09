@@ -22,7 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidApplications">
 
-        <!-- App-wide meta-data declaring support for parent-child Activity nav -->
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".LoginActivity" />
