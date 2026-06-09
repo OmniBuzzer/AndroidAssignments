@@ -1,0 +1,68 @@
+@startuml
+class com.example.androidapplications.LoginActivity {
+- {static} String PREFS_NAME
+- {static} String KEY_EMAIL
+- {static} String DEFAULT_EMAIL
+- {static} String TAG
+- EditText editTextEmail
+- EditText editTextPassword
+# void onCreate(Bundle)
+- void loginBtnFunction()
+- boolean isInputValid(String,String)
+# void onResume()
+# void onPause()
+# void onStop()
+# void onDestroy()
+}
+
+
+class com.example.androidapplications.MainActivity {
+- {static} String TAG
+- {static} int REQ_CODE
+# void onCreate(Bundle)
+# void onActivityResult(int,int,Intent)
+# void onResume()
+# void onPause()
+# void onStop()
+# void onDestroy()
+}
+
+
+class com.example.androidapplications.ChatWindow {
+~ ListView listView
+~ EditText editText
+~ Button sendButton
+~ ArrayList<String> messages
+~ ChatAdapter messageAdapter
+# void onCreate(Bundle)
+}
+
+
+class com.example.androidapplications.ChatWindow$ChatAdapter {
++ int getCount()
++ String getItem(int)
++ View getView(int,View,ViewGroup)
+}
+
+class com.example.androidapplications.ListItemsActivity {
+- {static} String TAG
+- ImageButton imgButton
+# void onCreate(Bundle)
++ void print(String)
+# void onActivityResult(int,int,Intent)
+# void onResume()
+# void onPause()
+# void onStop()
+# void onDestroy()
+}
+
+
+
+
+androidx.appcompat.app.AppCompatActivity <|-- com.example.androidapplications.LoginActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.androidapplications.MainActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.androidapplications.ChatWindow
+com.example.androidapplications.ChatWindow +.. com.example.androidapplications.ChatWindow$ChatAdapter
+com.example.androidapplications.ArrayAdapter <|-- com.example.androidapplications.ChatWindow$ChatAdapter
+androidx.appcompat.app.AppCompatActivity <|-- com.example.androidapplications.ListItemsActivity
+@enduml
