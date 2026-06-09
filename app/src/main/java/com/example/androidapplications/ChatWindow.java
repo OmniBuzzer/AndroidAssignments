@@ -23,15 +23,12 @@ import java.util.ArrayList;
 
 public class ChatWindow extends AppCompatActivity {
 
-    // Class variables for the views
     ListView listView;
     EditText editText;
     Button sendButton;
 
-    // ArrayList to store chat messages
     ArrayList<String> messages = new ArrayList<>();
 
-    // Adapter reference so we can notify it when data changes
     ChatAdapter messageAdapter;
 
     @Override
