@@ -7,10 +7,19 @@
     <string name="password_txt">Contrasena</string>
     <string name="switch_btn_text">Que hace esto?</string>
     <string name="dialog_title">Finalizar actividad??</string>
-    <string name="dialog_message">Desea finalizar esta actividad y volver a la pantalla anterior?</string>
+    <string name="dialog_msg">Desea finalizar esta actividad y volver a la pantalla anterior?</string>
     <string name="ok">Si</string>
     <string name="cancel">No</string>
     <string name="start_chat_btn">Iniciar chat</string>
     <string name="send_button_text">Enviar</string>
     <string name="send_msg_text">Introduzca el texto…</string>
+    <string name="test_tollbar_name">Test Barra de herramientas</string>
+    <string name="snackbar_mail_text">"Hola! Esto significa que al hacer clic aquí funciona!"</string>
+    <string name="dialog_okay">Vale</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="dialog_back_title_page">Quieres volver?</string>
+    <string name="item_one_text">Seleccionaste el artículo 1</string>
+    <string name="item_three_text">Seleccionaste el artículo 3</string>
+    <string name="dialog_new_msg_title">Introduzca un nuevo mensaje</string>
+    <string name="dialog_msg_placeholder">Nuevo mensaje</string>
 </resources>

@@ -67,7 +67,7 @@ public class ChatWindow extends AppCompatActivity {
     private class ChatAdapter extends ArrayAdapter<String> {
 
         public ChatAdapter(Context ctx) {
-            super(ctx, 0);
+            super(ctx, 0, messages);
         }
 
         @Override
@@ -81,15 +81,19 @@ public class ChatWindow extends AppCompatActivity {
         }
 
         @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             LayoutInflater inflater = ChatWindow.this.getLayoutInflater();
 
             View result;
-
             if (position % 2 == 0) {
-                result = inflater.inflate(R.layout.chat_row_incoming, null);
+                result = inflater.inflate(R.layout.chat_row_incoming, parent, false);
             } else {
-                result = inflater.inflate(R.layout.chat_row_outgoing, null);
+                result = inflater.inflate(R.layout.chat_row_outgoing, parent, false);
             }
 
             TextView message = result.findViewById(R.id.textMessage);

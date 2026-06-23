@@ -21,6 +21,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidApplications">
+        <activity
+            android:name=".TestToolBar"
+            android:exported="false"
+            android:theme="@style/Theme.AndroidApplications.NoActionBar" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
@@ -30,26 +34,23 @@
             android:name=".ChatWindow"
             android:exported="false"
             android:parentActivityName=".LoginActivity" />
-
         <activity
             android:name=".ListItemsActivity"
             android:exported="false"
             android:parentActivityName=".LoginActivity" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:parentActivityName=".LoginActivity" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

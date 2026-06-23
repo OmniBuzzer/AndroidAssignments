@@ -80,7 +80,7 @@ public class ListItemsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListItemsActivity.this);
 
-                builder.setMessage(R.string.dialog_message)
+                builder.setMessage(R.string.dialog_msg)
                         .setTitle(R.string.dialog_title)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
