@@ -108,8 +108,6 @@ public class TestToolBar extends AppCompatActivity {
             dialog.show();
         } else if (id == R.id.action_about) {
             Toast.makeText(this, "Version 1.0, by Jagnoor Hayer", Toast.LENGTH_LONG).show();
-        } else {
-            return super.onOptionsItemSelected(mi);
         }
         return true;
     }
