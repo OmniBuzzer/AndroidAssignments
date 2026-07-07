@@ -27,8 +27,6 @@ import java.util.ArrayList;
 
 public class ChatWindow extends AppCompatActivity {
 
-    protected static final String ACTIVITY_NAME = "ChatWindow";
-
     ListView listView;
     EditText editText;
     Button sendButton;
@@ -36,6 +34,8 @@ public class ChatWindow extends AppCompatActivity {
     ArrayList<String> messages = new ArrayList<>();
 
     ChatAdapter messageAdapter;
+
+    protected static final String ACTIVITY_NAME = "ChatWindow";
 
     private SQLiteDatabase db;
 
@@ -60,8 +60,7 @@ public class ChatWindow extends AppCompatActivity {
         ChatDatabaseHelper dbHelper = new ChatDatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.query(ChatDatabaseHelper.TABLE_NAME,
-                null, null, null, null, null, null);
+        Cursor cursor = db.query(ChatDatabaseHelper.TABLE_NAME, null, null, null, null, null, null);
 
         Log.i(ACTIVITY_NAME, "Cursor's column count =" + cursor.getColumnCount());
         for (int i = 0; i < cursor.getColumnCount(); i++) {
@@ -69,14 +68,16 @@ public class ChatWindow extends AppCompatActivity {
         }
 
         cursor.moveToFirst();
+
         while (!cursor.isAfterLast()) {
-            String message = cursor.getString(
-                    cursor.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_MESSAGE));
+            String message = cursor.getString(cursor.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_MESSAGE));
             Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + message);
             messages.add(message);
             cursor.moveToNext();
         }
+
         cursor.close();
+
         messageAdapter.notifyDataSetChanged();
 
         sendButton.setOnClickListener(new View.OnClickListener() {
