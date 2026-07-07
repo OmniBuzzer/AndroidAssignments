@@ -1,6 +1,10 @@
 package com.example.androidapplications;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,8 @@ import java.util.ArrayList;
 
 public class ChatWindow extends AppCompatActivity {
 
+    protected static final String ACTIVITY_NAME = "ChatWindow";
+
     ListView listView;
     EditText editText;
     Button sendButton;
@@ -30,6 +36,8 @@ public class ChatWindow extends AppCompatActivity {
     ArrayList<String> messages = new ArrayList<>();
 
     ChatAdapter messageAdapter;
+
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,28 @@ public class ChatWindow extends AppCompatActivity {
         messageAdapter = new ChatAdapter(this);
         listView.setAdapter(messageAdapter);
 
+        ChatDatabaseHelper dbHelper = new ChatDatabaseHelper(this);
+        db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.query(ChatDatabaseHelper.TABLE_NAME,
+                null, null, null, null, null, null);
+
+        Log.i(ACTIVITY_NAME, "Cursor's column count =" + cursor.getColumnCount());
+        for (int i = 0; i < cursor.getColumnCount(); i++) {
+            Log.i(ACTIVITY_NAME, "Column name: " + cursor.getColumnName(i));
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String message = cursor.getString(
+                    cursor.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_MESSAGE));
+            Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + message);
+            messages.add(message);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        messageAdapter.notifyDataSetChanged();
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,11 +87,23 @@ public class ChatWindow extends AppCompatActivity {
 
                 messages.add(typedMessage);
 
+                ContentValues values = new ContentValues();
+                values.put(ChatDatabaseHelper.KEY_MESSAGE, typedMessage);
+                db.insert(ChatDatabaseHelper.TABLE_NAME, null, values);
+
                 messageAdapter.notifyDataSetChanged();
 
                 editText.setText("");
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
     }
 
     private class ChatAdapter extends ArrayAdapter<String> {
