@@ -24,6 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidApplications">
         <activity
+            android:name=".WeatherForecast"
+            android:exported="false" />
+        <activity
             android:name=".TestToolBar"
             android:exported="false"
             android:theme="@style/Theme.AndroidApplications.NoActionBar" />
