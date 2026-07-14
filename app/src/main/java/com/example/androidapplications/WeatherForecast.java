@@ -7,8 +7,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class WeatherForecast extends AppCompatActivity {
 
@@ -35,6 +39,7 @@ public class WeatherForecast extends AppCompatActivity {
     TextView minTempText;
     TextView maxTempText;
     ImageView weatherPic;
+    Spinner citySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +57,29 @@ public class WeatherForecast extends AppCompatActivity {
         minTempText = findViewById(R.id.min_temp_text);
         maxTempText = findViewById(R.id.max_temp_text);
         weatherPic = findViewById(R.id.weather_pic);
+        citySpinner = findViewById(R.id.city_dropdown);
+        
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.canadian_cities,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        citySpinner.setAdapter(adapter);
+        
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCity = parent.getItemAtPosition(position).toString();
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setProgress(0);
+                new ForecastQuery().execute(selectedCity);
+            }
 
-        progressBar.setVisibility(View.VISIBLE);
-
-        new ForecastQuery().execute();
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     public boolean fileExistance(String fname) {
@@ -71,14 +95,17 @@ public class WeatherForecast extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            String urlString = "http://api.openweathermap.org/data/2.5/weather?q=ottawa,ca&APPID=c281a4bb058894c187d911bbf348853b&mode=xml&units=metric";
             String iconName = null;
 
             try {
+                String city = strings[0];
+                String userPickedCity = URLEncoder.encode(city, "UTF-8");
+                String urlString = "https://api.openweathermap.org/data/2.5/weather?q=" + userPickedCity + ",ca&APPID=c281a4bb058894c187d911bbf348853b&mode=xml&units=metric";
+
                 URL url = new URL(urlString);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
+                conn.setConnectTimeout(30000);
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
                 conn.connect();
@@ -91,6 +118,7 @@ public class WeatherForecast extends AppCompatActivity {
                 xpp.setInput(inputStream, "UTF-8");
 
                 int eventType = xpp.next();
+
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
                         String tagName = xpp.getName();
@@ -111,9 +139,6 @@ public class WeatherForecast extends AppCompatActivity {
                     eventType = xpp.next();
                 }
 
-                Log.i("WeatherForecast", "Current: " + current_temp + ", Min: " + min_temp + ", Max: " + max_temp + ", Icon: " + iconName);
-
-                // Handle the weather icon (load from disk or download)
                 if (iconName != null) {
                     String fileName = iconName + ".png";
                     Log.i("WeatherForecast", "Looking for icon file: " + fileName);
@@ -129,7 +154,7 @@ public class WeatherForecast extends AppCompatActivity {
                         weather_icon = BitmapFactory.decodeStream(fis);
                     } else {
                         Log.i("WeatherForecast", "Image not found locally, downloading");
-                        String imageURL = "http://openweathermap.org/img/w/" + iconName + ".png";
+                        String imageURL = "https://openweathermap.org/img/w/" + iconName + ".png";
                         weather_icon = HTTPUtils.getImage(imageURL);
                         FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
                         weather_icon.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
@@ -156,9 +181,9 @@ public class WeatherForecast extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            currentTempText.setText("Current Temperature: " + current_temp + "°C");
-            minTempText.setText("Min Temperature: " + min_temp + "°C");
-            maxTempText.setText("Max Temperature: " + max_temp + "°C");
+            currentTempText.setText(getString(R.string.current_temp_text, current_temp));
+            minTempText.setText(getString(R.string.min_temp_text, min_temp));
+            maxTempText.setText(getString(R.string.max_temp_text, max_temp));
             weatherPic.setImageBitmap(weather_icon);
             progressBar.setVisibility(View.INVISIBLE);
         }

@@ -23,4 +23,7 @@
     <string name="dialog_new_msg_title">Introduzca un nuevo mensaje</string>
     <string name="dialog_msg_placeholder">Nuevo mensaje</string>
     <string name="start_wearth_btn">Inicio del tiempo</string>
+    <string name="min_temp_text">Temperatura mínima: %s°C</string>
+    <string name="max_temp_text">Temperatura maxima: %s°C</string>
+    <string name="current_temp_text">Temperatura actual: %s°C</string>
 </resources>
