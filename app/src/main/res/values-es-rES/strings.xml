@@ -22,4 +22,5 @@
     <string name="item_three_text">Seleccionaste el artículo 3</string>
     <string name="dialog_new_msg_title">Introduzca un nuevo mensaje</string>
     <string name="dialog_msg_placeholder">Nuevo mensaje</string>
+    <string name="start_wearth_btn">Inicio del tiempo</string>
 </resources>

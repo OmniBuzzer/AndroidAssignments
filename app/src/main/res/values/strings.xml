@@ -21,6 +21,8 @@
     <string name="item_three_text">You selected item 3</string>
     <string name="dialog_new_msg_title">Enter a new message</string>
     <string name="dialog_msg_placeholder">New Message</string>
+    <string name="start_wearth_btn">Start Weather</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
