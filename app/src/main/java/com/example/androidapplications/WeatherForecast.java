@@ -167,7 +167,6 @@ public class WeatherForecast extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
