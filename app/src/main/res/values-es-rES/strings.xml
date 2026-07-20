@@ -26,4 +26,5 @@
     <string name="min_temp_text">Temperatura mínima: %s°C</string>
     <string name="max_temp_text">Temperatura maxima: %s°C</string>
     <string name="current_temp_text">Temperatura actual: %s°C</string>
+    <string name="delete_button_text">Eliminar este mensaje</string>
 </resources>
