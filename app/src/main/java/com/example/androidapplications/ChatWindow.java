@@ -34,17 +34,17 @@ public class ChatWindow extends AppCompatActivity {
 
     ArrayList<String> messages = new ArrayList<>();
 
-    ChatAdapter messageAdapter;
+    public static final String ACTIVITY_NAME = "ChatText";
 
-    protected static final String ACTIVITY_NAME = "ChatWindow";
+    ChatAdapter messageAdapter;
 
     private SQLiteDatabase db;
 
-    private Cursor cursor;      // NEW: class variable so getItemId can use it
+    private Cursor cursor;
 
-    private boolean isTablet;   // true when the sw600dp (tablet) layout is loaded
+    private boolean isTablet;
 
-    private static final int MESSAGE_DETAILS_REQUEST = 1;
+    private static final int MESSAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,21 +57,20 @@ public class ChatWindow extends AppCompatActivity {
             return insets;
         });
 
-        // frameLayout only exists in res/layout-sw600dp, so null means phone layout
         isTablet = (findViewById(R.id.frameLayout) != null);
-        Log.i(ACTIVITY_NAME, "isTablet = " + isTablet);
 
         listView = findViewById(R.id.listView);
         editText = findViewById(R.id.send_text);
         sendButton = findViewById(R.id.send_button);
 
         messageAdapter = new ChatAdapter(this);
+
         listView.setAdapter(messageAdapter);
 
         ChatDatabaseHelper dbHelper = new ChatDatabaseHelper(this);
+
         db = dbHelper.getWritableDatabase();
 
-        // Query with null projection returns ALL columns, including _id
         cursor = db.query(ChatDatabaseHelper.TABLE_NAME, null, null, null, null, null, null);
 
         Log.i(ACTIVITY_NAME, "Cursor's column count =" + cursor.getColumnCount());
@@ -83,12 +82,13 @@ public class ChatWindow extends AppCompatActivity {
 
         while (!cursor.isAfterLast()) {
             String message = cursor.getString(cursor.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_MESSAGE));
+
             Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + message);
+
             messages.add(message);
+
             cursor.moveToNext();
         }
-
-        // NOTE: cursor is no longer closed here — getItemId needs it alive
 
         messageAdapter.notifyDataSetChanged();
 
@@ -101,12 +101,13 @@ public class ChatWindow extends AppCompatActivity {
                 messages.add(typedMessage);
 
                 ContentValues values = new ContentValues();
+
                 values.put(ChatDatabaseHelper.KEY_MESSAGE, typedMessage);
+
                 db.insert(ChatDatabaseHelper.TABLE_NAME, null, values);
 
-                // NEW: re-query so the cursor also contains the row we just inserted,
-                // keeping cursor positions in sync with the messages list
                 cursor.close();
+
                 cursor = db.query(ChatDatabaseHelper.TABLE_NAME, null, null, null, null, null, null);
 
                 messageAdapter.notifyDataSetChanged();
@@ -116,28 +117,27 @@ public class ChatWindow extends AppCompatActivity {
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            // 'id' is the database _id — the ListView gets it by calling
-            // messageAdapter.getItemId(position) from step 6
-
             String message = messageAdapter.getItem(position);
 
             if (isTablet) {
-                // Tablet: load the fragment into the FrameLayout beside the list
                 MessageFragment fragment = new MessageFragment(this);
 
                 Bundle bundle = new Bundle();
+
                 bundle.putString("messageText", message);
                 bundle.putLong("messageId", id);
+
                 fragment.setArguments(bundle);
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).commit();
 
             } else {
-                // Phone: launch the MessageDetails activity instead
                 Intent intent = new Intent(ChatWindow.this, MessageDetails.class);
+
                 intent.putExtra("messageText", message);
                 intent.putExtra("messageId", id);
-                startActivityForResult(intent, MESSAGE_DETAILS_REQUEST);
+
+                startActivityForResult(intent, MESSAGE_REQUEST);
             }
         });
     }
@@ -146,25 +146,24 @@ public class ChatWindow extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == MESSAGE_DETAILS_REQUEST && resultCode == RESULT_OK && data != null) {
+        if (requestCode == MESSAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             long idToDelete = data.getLongExtra("messageId", -1);
-            Log.i(ACTIVITY_NAME, "Deleting message with id = " + idToDelete);
+
             deleteMessage(idToDelete);
         }
     }
 
-    // Deletes the row from the database, then rebuilds the list and cursor
     public void deleteMessage(long id) {
-        db.delete(ChatDatabaseHelper.TABLE_NAME,
-                ChatDatabaseHelper.KEY_ID + "=?",
-                new String[]{ Long.toString(id) });
+        db.delete(ChatDatabaseHelper.TABLE_NAME, ChatDatabaseHelper.KEY_ID + "=?", new String[]{ Long.toString(id) });
 
-        // Re-query and rebuild the messages list so list, cursor, and db stay in sync
         cursor.close();
+
         cursor = db.query(ChatDatabaseHelper.TABLE_NAME, null, null, null, null, null, null);
 
         messages.clear();
+
         cursor.moveToFirst();
+
         while (!cursor.isAfterLast()) {
             messages.add(cursor.getString(cursor.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_MESSAGE)));
             cursor.moveToNext();
@@ -177,7 +176,7 @@ public class ChatWindow extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (cursor != null && !cursor.isClosed()) {
-            cursor.close();                          // NEW: close it here instead
+            cursor.close();
         }
         if (db != null && db.isOpen()) {
             db.close();
@@ -187,23 +186,26 @@ public class ChatWindow extends AppCompatActivity {
     private class ChatAdapter extends ArrayAdapter<String> {
 
         public ChatAdapter(Context ctx) {
+
             super(ctx, 0, messages);
         }
 
         @Override
         public int getCount() {
+
             return messages.size();
         }
 
         @Override
         public String getItem(int position) {
+
             return messages.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            // NEW: return the database _id of the row at this list position
             cursor.moveToPosition(position);
+
             return cursor.getLong(cursor.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_ID));
         }
 

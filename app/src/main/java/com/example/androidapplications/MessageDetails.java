@@ -24,8 +24,10 @@ public class MessageDetails extends AppCompatActivity {
         MessageFragment fragment = new MessageFragment(null);
 
         Bundle bundle = new Bundle();
+
         bundle.putString("messageText", getIntent().getStringExtra("messageText"));
         bundle.putLong("messageId", getIntent().getLongExtra("messageId", -1));
+
         fragment.setArguments(bundle);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main, fragment).commit();

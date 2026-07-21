@@ -19,6 +19,7 @@ public class MessageFragment extends Fragment {
     private final ChatWindow chatWindow;
 
     public MessageFragment(ChatWindow chatWindow) {
+
         this.chatWindow = chatWindow;
     }
 
@@ -30,9 +31,11 @@ public class MessageFragment extends Fragment {
 
         TextView messageText = result.findViewById(R.id.message_Text);
         TextView idText = result.findViewById(R.id.id_Text);
+
         Button deleteButton = result.findViewById(R.id.deleteButton);
 
         Bundle args = getArguments();
+
         if (args != null) {
             messageText.setText(args.getString("messageText"));
             idText.setText("ID = " + args.getLong("messageId"));
@@ -43,17 +46,11 @@ public class MessageFragment extends Fragment {
             long messageId = args.getLong("messageId");
 
             if (chatWindow != null) {
-                // Tablet: delete directly through the ChatWindow reference,
-                // then remove this fragment from the FrameLayout
                 chatWindow.deleteMessage(messageId);
 
-                getParentFragmentManager()
-                        .beginTransaction()
-                        .remove(MessageFragment.this)
-                        .commit();
+                getParentFragmentManager().beginTransaction().remove(MessageFragment.this).commit();
 
             } else {
-                // Phone: send the id back to ChatWindow as a result, then close
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("messageId", messageId);
 
